@@ -1,3 +1,91 @@
+/************************************************
+ 
+APP CONFIG
+
+**************************************************/
+
+var express = require('express');
+var app = express();
+var path = require('path');
+var bodyParser = require('body-parser');
+//var router = express.Router();
+
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+
+// parse application/json
+app.use(bodyParser.json());
+
+
+// allow CORS
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+/************************************************
+ 
+START APP 
+
+**************************************************/
+
+
+app.listen(process.env.PORT);
+console.log('Example app listening on port: ' + process.env.PORT);
+console.log('Example app IP: ' + process.env.IP);
+console.log("My path: ");
+console.log(path.resolve());
+
+/************************************************
+ 
+ROUTES
+
+**************************************************/
+
+
+
+// Order of routes is important for ome reason
+app.get('/', function(req, res) {
+
+  res.json({
+    test: 'My Node.js Test API. Hit /users, /groups or /devices route'
+  });
+
+});
+
+
+app.get('/ping', function(req, res) {
+    
+  res.json({
+    test: 'Pong'
+  });
+
+});
+
+
+
+app.use('/users',require('./routes/usersController.js'));
+
+
+app.use(function(req, res, next) {
+
+  res.status(404).send('Sorry can not find it');
+
+});
+
+
+
+/************************************************
+ 
+MySQL Connection
+
+**************************************************/
+
+
  /*  
 # start MySQL. Will create an empty database on first start
 $ mysql-ctl start
@@ -16,91 +104,41 @@ Database - c9 (The database username)
 
 select @@hostname;
 */
-var Sequelize = require("sequelize");
-var sequelize = new Sequelize('c9','markche','', {
-    
-    host: 'localhost',
-    dialect: 'mysql',
-    
-    
-    pool: {
-        max: 5,
-        min: 0,
-        idle: 10000
-    },
-    
-    
-    
-    
-});
 
-var User = sequelize.define('user', {
-    
-  email: {
-    type: Sequelize.STRING,
-    field: 'email',
-   /* get      : function()  {
-      var fname = this.getDataValue('firstName');
-      // 'this' allows you to access attributes of the instance
-      return this.getDataValue('email') + ' (' + fname + ')';
-    }*/
-  }, 
-  firstName: {
-    type: Sequelize.STRING,
-    field: 'firstname' // Will result in an attribute that is firstName when user facing but first_name in the database
-  },
-  lastName: {
-    type: Sequelize.STRING,
-    field: 'lastname'
-  }, 
-   password: {
-    type: Sequelize.STRING,
-    field: 'password' 
-  }, 
-   birthdate: {
-    type: Sequelize.DATE,
-    field: 'birthdate' 
-  },
-    height: {
-    type: Sequelize.INTEGER,
-    field: 'height' 
-  },
-    weight: {
-    type: Sequelize.INTEGER,
-    field: 'weight' 
-  },
-    active: {
-    type: Sequelize.INTEGER,
-    field: 'active' 
-  }, 
-  
-}, // end fields 
 
-{
+// route middleware that will happen on every request
+// router.use(function(req, res, next) {
 
-  freezeTableName: true, // Model tableName will be the same as the model name
-  tableName: 'user'
+//     // log each request to the console
+//     console.log(req.method, req.url);
 
-,
-  
-
-  getterMethods   : {
-    getFullName       : function()  { return this.firstName + ' ' + this.lastName }
-  },   // end getter
-  
-});
+//     // continue doing what we were doing and go to the route
+//     next(); 
+// });
 
 
 
-User.findAll({
-    attributes: ['firstName','lastName', 'email'],
-    where: {
-        email: "mark.chernov@gmail.com"
 
-    }
 
-}).then(function(user) {
-    //console.log(user.get('email'));
-    console.log(user);
-    console.log(user[0].dataValues.email);
-});
+// // apply the routes to our application
+// app.use('/', router);
+
+// // home page route (http://localhost:8080)
+// router.get('/home', function(req, res) {
+//     res.send('im the home page!');  
+// });
+
+// // about page route (http://localhost:8080/about)
+// router.get('/about', function(req, res) {
+//     res.send('im the about page!'); 
+// });
+
+
+
+
+
+
+
+
+
+module.exports = app;
