@@ -1,4 +1,3 @@
-
 var sequelizeConnection = require('../connection.js');
 
 var usersSequelizeDao = require('../daos/usersSequelizeDao.js');
@@ -12,30 +11,52 @@ var router = express.Router();
 
 // // middleware that is specific to this router
 router.use(function timeLog(req, res, next) {
-  console.log('In Users Route,  Time: ', new Date());
-  next();
+    console.log('In Users Route,  Time: ', new Date());
+    next();
 });
 
+//route middleware that will happen on every request
+router.use(function(req, res, next) {
 
+    // log each request to the console
+    console.log(req.method, req.url);
+
+    // continue doing what we were doing and go to the route
+    next();
+});
 
 router.get('/', function(req, res) {
 
-  //res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-  //res.send('Hello Users!');
-   
-  console.log('inside GET /users');
- 
-   
-      usersSequelizeDao.findUserByEmail(function(obj) {
-      
-      console.log('Inside usersController after  return from Dao: ');
-      console.log(obj);
-      res.send(obj);
-      
-  });  
-  
-  
-  
+
+
+    console.log('inside GET /users');
+
+
+    usersSequelizeDao.findAllUsers(function(sequelizeArray) {
+
+        console.log('Controller - All Users: ');
+        console.log(sequelizeArray[0].dataValues);  //  data from sequilize object
+        console.log(sequelizeArray[1].dataValues);  //  data from sequilize object
+        res.send(sequelizeArray);
+
+    });
+
+});
+
+router.get('/:email', function(req, res) {
+
+    console.log('inside GET /users/email');
+    console.log('req.params.email:  ');
+    console.log(req.params.email);
+    var userEmail = req.params.email;
+
+    usersSequelizeDao.findUserByEmail(userEmail,function(sequelizeObject) {
+
+        console.log('Controller - User: ');
+        console.log(sequelizeObject.dataValues);
+        res.send(sequelizeObject);
+    });
+
 });
    
    
