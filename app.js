@@ -4,11 +4,11 @@ APP CONFIG
 
 **************************************************/
 
-var express = require('express');
-var app = express();
-var path = require('path');
-var bodyParser = require('body-parser');
-//var router = express.Router();
+const express = require('express');
+const app = express();
+const path = require('path');
+const bodyParser = require('body-parser');
+
 
 
 // parse application/x-www-form-urlencoded

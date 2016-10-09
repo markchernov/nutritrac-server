@@ -30,9 +30,9 @@ select @@hostname;
 
 
 // require library
-var Sequelize = require("sequelize");
+const Sequelize = require("sequelize");
 // save connection
-var sequelizeConnection = new Sequelize('c9','markche','', {
+const sequelizeConnection = new Sequelize('c9','markche','', {
     
     host: 'localhost',
     dialect: 'mysql',

@@ -1,62 +1,70 @@
-var sequelizeConnection = require('../connection.js');
-var Sequelize = require("sequelize");
+const sequelizeConnection = require('../connection.js');
+const Sequelize = require("sequelize");
 
 
-var userModel = sequelizeConnection.define('user', {
+const userModel = sequelizeConnection.define('user', {
+
+    email: {
+      type: Sequelize.STRING,
+      field: 'email',
+      primaryKey: true,
+      get      : function()  {
+          var fname = this.getDataValue('firstName');
+          var lname = this.getDataValue('lastName');
+          // 'this' allows you to access attributes of the instance
+          return this.getDataValue('email') + ' of (' + fname + ' ' + lname + ')';
+        },
+    },
+    firstName: {
+      type: Sequelize.STRING,
+      field: 'firstname' // Will result in an attribute that is firstName when user facing but first_name in the database
+    },
+    lastName: {
+      type: Sequelize.STRING,
+      field: 'lastname'
+    },
+    password: {
+      type: Sequelize.STRING,
+      field: 'password'
+    },
+    birthdate: {
+      type: Sequelize.DATE,
+      field: 'birthdate'
+    },
     
-  email: {
-    type: Sequelize.STRING,
-    field: 'email',
-  /* get      : function()  {
-      var fname = this.getDataValue('firstName');
-      // 'this' allows you to access attributes of the instance
-      return this.getDataValue('email') + ' (' + fname + ')';
-    }*/
-  }, 
-  firstName: {
-    type: Sequelize.STRING,
-    field: 'firstname' // Will result in an attribute that is firstName when user facing but first_name in the database
-  },
-  lastName: {
-    type: Sequelize.STRING,
-    field: 'lastname'
-  }, 
-  password: {
-    type: Sequelize.STRING,
-    field: 'password' 
-  }, 
-  birthdate: {
-    type: Sequelize.DATE,
-    field: 'birthdate' 
-  },
+    sex: {
+      type: Sequelize.STRING,
+      field: 'sex'
+    },
     height: {
-    type: Sequelize.INTEGER,
-    field: 'height' 
-  },
+      type: Sequelize.INTEGER,
+      field: 'height'
+    },
     weight: {
-    type: Sequelize.INTEGER,
-    field: 'weight' 
-  },
+      type: Sequelize.INTEGER,
+      field: 'weight'
+    },
     active: {
-    type: Sequelize.INTEGER,
-    field: 'active' 
-  }, 
-  
-},  // end user fields
+      type: Sequelize.INTEGER,
+      field: 'active'
+    },
 
- {
+  }, // end user fields
 
-  freezeTableName: true, // Model tableName will be the same as the model name
-  tableName: 'user'
+  // {  // open options
 
-  
+  // getterMethods   : {
+  //   fullName       : function()  { return this.firstName + ' ' + this.lastName }
+  // },
 
-//   getterMethods   : {
-//     getFullName       : function()  { return this.firstName + ' ' + this.lastName }
-//   },   // end getter
-  
-}  // end options
 
+  {
+
+    freezeTableName: true, // Model tableName will be the same as the model name
+    tableName: 'user',
+    timestamps: false
+
+  } // end options
 
 );
 

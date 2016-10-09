@@ -1,9 +1,6 @@
-var sequelizeConnection = require('../connection.js');
-
-var usersSequelizeDao = require('../daos/usersSequelizeDao.js');
-
-var express = require('express');
-var router = express.Router();
+const usersSequelizeDao = require('../daos/usersSequelizeDao.js');
+const express = require('express');
+const router = express.Router();
 
 /************************************************
          Users in user table in c9 MySQL database
@@ -25,6 +22,12 @@ router.use(function(req, res, next) {
     next();
 });
 
+
+/************************************************
+         GETS
+**************************************************/
+
+
 router.get('/', function(req, res) {
 
 
@@ -32,12 +35,21 @@ router.get('/', function(req, res) {
     console.log('inside GET /users');
 
 
-    usersSequelizeDao.findAllUsers(function(sequelizeArray) {
+    usersSequelizeDao.findAllUsers(function(sequelizeResponse) {
 
-        console.log('Controller - All Users: ');
-        console.log(sequelizeArray[0].dataValues);  //  data from sequilize object
-        console.log(sequelizeArray[1].dataValues);  //  data from sequilize object
-        res.send(sequelizeArray);
+        if (sequelizeResponse instanceof Error) {
+
+            console.log('Controller - findAllUsers Error: ');
+            res.send(sequelizeResponse);
+
+        }
+        else {
+
+            console.log('Controller - All Users: ');
+            console.log(sequelizeResponse[0].dataValues); //  data from sequilize object
+            console.log(sequelizeResponse[1].dataValues); //  data from sequilize object
+            res.send(sequelizeResponse);
+        }
 
     });
 
@@ -50,147 +62,142 @@ router.get('/:email', function(req, res) {
     console.log(req.params.email);
     var userEmail = req.params.email;
 
-    usersSequelizeDao.findUserByEmail(userEmail,function(sequelizeObject) {
+    usersSequelizeDao.findUserByEmail(userEmail, function(sequelizeResponse, error) {
 
-        console.log('Controller - User: ');
-        console.log(sequelizeObject.dataValues);
-        res.send(sequelizeObject);
+        if (sequelizeResponse instanceof Error) {
+
+
+            console.log('Controller - findUserByEmail Error: ');
+            console.log(sequelizeResponse);
+            res.send(sequelizeResponse);
+
+
+        }
+        else {
+
+            console.log('Controller - User: ');
+            console.log(sequelizeResponse);
+            res.send(sequelizeResponse);
+        }
     });
 
 });
-   
-   
-   
-   
-   
-   
 
-//   usersMongooseDAO.findAllUsers(function(obj) {
 
-//     console.log('returned object after usersMongoose.findAllUsers');
-//     console.log(obj);
-//     res.send(obj);
+/************************************************
+         POSTS
+**************************************************/
 
 
 
+router.post('/new', function(req, res) {
+
+    console.log('inside POST /users/new');
+
+    var userObject = req.body;
+
+    console.log('userObject: ');
+    console.log(userObject);
+
+    usersSequelizeDao.createUser(userObject, function(sequelizeResponse) {
+
+        if (sequelizeResponse instanceof Error) {
+
+            console.log('Controller - Create new User Error: ');
+            res.send(sequelizeResponse);
+
+        }
+
+        else {
+
+            console.log('Controller - Create new User Sucess: ');
+            console.log(sequelizeResponse);
+            res.send(sequelizeResponse);
+        }
+
+    });
+
+});
+
+/************************************************
+         PUTS
+**************************************************/
+
+router.put('/:email', function(req, res) {
+
+    console.log('inside PUT /users/:email');
+    var userParam = req.params.email;
+    console.log('userParam: ');
+    console.log(userParam);
 
 
+    var userObject = req.body;
+    console.log('userObject: ');
+    console.log(userObject);
+
+    usersSequelizeDao.updateUser(userParam, userObject, function(sequelizeResponse) {
+
+        if (sequelizeResponse instanceof Error) {
+
+            console.log('Controller - Update User Error: ');
+            res.send(sequelizeResponse);
+
+        }
+
+        else {
+
+            console.log('Controller - Update User Sucess: ');
+            console.log(sequelizeResponse);
+            res.send(sequelizeResponse);
+        }
+
+    });
+
+});
 
 
+/************************************************
+         DELETES
+**************************************************/
+
+router.delete('/:email', function(req, res) {
+
+    console.log('inside DELETE /users/:email');
+    var userParam = req.params.email;
+    console.log('userParam: ');
+    console.log(userParam);
 
 
+    usersSequelizeDao.deleteUser(userParam, function(sequelizeResponse) {
+
+        if (sequelizeResponse instanceof Error) {
+
+            console.log('Controller - Delete User Error: ');
+            res.send(sequelizeResponse);
+
+        }
+
+        else {
+
+            console.log('Controller - Delete User Sucess: ');
+            console.log(sequelizeResponse);
+            res.send(sequelizeResponse);
+        }
+
+    });
+
+});
 
 
-
-// router.get('/:CallSign', function(req, res) {
-
-//   console.log('inside GET users/:CallSign');
-//   console.log('req.params.CallSign:  ');
-//   console.log(req.params.CallSign);
-  
-//   var userParam = req.params.CallSign;
-
-//   usersMongooseDAO.findUserById(userParam, function(obj) {
-
-//     console.log('returned object after usersMongoose.findUserById');
-//     console.log(obj);
-//     res.send(obj);
-//   });
-// });
-
-
-// router.get('/', function(req, res) {
-
-//   console.log('inside GET /users');
-
-
-//   usersMongooseDAO.findAllUsers(function(obj) {
-
-//     console.log('returned object after usersMongoose.findAllUsers');
-//     console.log(obj);
-//     res.send(obj);
-//   });
-// });
-
-
-
-
-// router.post('/', function(req, res) {
-//   console.log('inside POST /users');
-//   console.log('req.body    ');
-//   console.log(req.body);
-
-
-//   var newUser = {
-//     CallSign: req.body.CallSign,
-//     Device: req.body.MAC,
-//     Group: req.body.GR,
-//     DATE: new Date()
-//   };
-
-//   usersMongooseDAO.saveUser(newUser, function(obj) {
-
-//     console.log('returned object after quotesDAO.getAllUsers');
-//     console.log(obj);
-//     res.send(obj);
-
-//   });
-// });
-
-
-// router.put('/:CallSign', function(req, res) {
-
-//   console.log('inside PUT /users/:CallSign');
-//   console.log('req.params.CallSign:  ');
-//   console.log(req.params.CallSign);
-  
-//   console.log('req.body    ');
-//   console.log(req.body);
-
-//   var updateUser = {
-//     CallSign: req.body.CallSign,
-//     Device: req.body.Device,
-//     Group: req.body.Group
-//   };
-
-
-
-//   var userParam = req.params.CallSign;
-
-//   usersMongooseDAO.updateUserById(userParam, updateUser,  function(obj) {
-
-//     console.log('returned object after usersMongoose.updateUserById');
-//     console.log(obj);
-//     res.send(obj);
-//   });
-// });
-
-
-// router.delete('/:CallSign', function(req, res) {
-
-//   console.log('inside DELETE /users/:CallSign');
-//   console.log('req.params.id:  ');
-//   console.log(req.params.CallSign);
-
-
-//   var userParam = req.params.CallSign;
-
-//   usersMongooseDAO.deleteUserById(userParam, function(obj) {
-
-//     console.log('returned object after usersMongoose.deleteUserById');
-//     console.log(obj);
-//     res.send(obj);
-//   });
-// });
 
 // home page route (http://localhost:8080)
 router.get('/home', function(req, res) {
-    res.send('im the home page!');  
+    res.send('im the home page!');
 });
 
 // about page route (http://localhost:8080/about)
 router.get('/about', function(req, res) {
-    res.send('im the about page!'); 
+    res.send('im the about page!');
 });
 
 module.exports = router;
