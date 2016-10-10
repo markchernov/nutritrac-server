@@ -26,7 +26,27 @@ router.use(function(req, res, next) {
 /************************************************
          GETS
 **************************************************/
+router.get('/promise', function(req, res) {
 
+
+    console.log('inside GET /users/promise');
+    
+    
+    usersSequelizeDao.findAllUsersReturnPromise().then(function(sequelizeArray) {
+
+            console.log("GET - All Users Promise: ");
+            console.log("sequelizeArray:"); //  call return a special Array with dataValues as a payload
+            console.log(sequelizeArray); 
+            
+            res.send( sequelizeArray );
+            
+        }).catch(function(error) {
+
+            console.log("In catch with Error: " + error);
+            
+            res.send( error );
+        });
+});
 
 router.get('/', function(req, res) {
 
@@ -40,6 +60,7 @@ router.get('/', function(req, res) {
         if (sequelizeResponse instanceof Error) {
 
             console.log('Controller - findAllUsers Error: ');
+            console.log(sequelizeResponse);
             res.send(sequelizeResponse);
 
         }
@@ -111,6 +132,35 @@ router.post('/new', function(req, res) {
         else {
 
             console.log('Controller - Create new User Sucess: ');
+            console.log(sequelizeResponse);
+            res.send(sequelizeResponse);
+        }
+
+    });
+
+});
+
+router.post('/login', function(req, res) {
+
+    console.log('inside POST /users/login');
+
+    var userObject = req.body;
+
+    console.log('userObject: ');
+    console.log(userObject);
+
+    usersSequelizeDao.login(userObject, function(sequelizeResponse) {
+
+        if (sequelizeResponse instanceof Error) {
+
+            console.log('Controller - Login Error: ');
+            res.send(sequelizeResponse);
+
+        }
+
+        else {
+
+            console.log('Controller - Login Sucess: ');
             console.log(sequelizeResponse);
             res.send(sequelizeResponse);
         }

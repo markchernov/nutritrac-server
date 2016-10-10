@@ -8,7 +8,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
-
+const cors = require('cors');
 
 
 // parse application/x-www-form-urlencoded
@@ -21,11 +21,11 @@ app.use(bodyParser.json());
 
 
 // allow CORS
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+const corsOptions = {  origin:'http://localhost:3000', credentials: true };  // allow origin from my Angular2 and allow Access-Control-Allow-Credentials
+app.use(cors(corsOptions));
+app.options('*', cors());
+
+
 
 /************************************************
  
@@ -59,6 +59,8 @@ app.get('/', function(req, res) {
 
 
 app.get('/ping', function(req, res) {
+  
+  console.log("Pinged");
     
   res.json({
     Ping: 'Pong'
@@ -67,7 +69,7 @@ app.get('/ping', function(req, res) {
 });
 
 
-app.use('/users',require('./routes/usersController.js'));
+app.use('/users', require('./routes/usersController.js'));
 
 
 app.use(function(req, res, next) {

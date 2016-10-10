@@ -3,6 +3,16 @@ const userModel = require('../models/User.js');
 
 
 const usersSequelizeDao = {
+    
+    
+    
+    findAllUsersReturnPromise: () => {
+
+        console.log('Inside usersSequelizeDao.findAllUsersPromise');
+
+        return userModel.findAll({
+            attributes: ['firstName', 'lastName', 'email', 'password', 'birthdate', 'sex', 'height', 'weight', 'active'] });
+    },
 
     findAllUsers: function(callback) {
 
@@ -108,6 +118,33 @@ const usersSequelizeDao = {
 
         console.log('Inside usersSequelizeDao.createUser');
     },
+    
+     login: function(userObject, callback) {
+
+
+        userModel.findOne({
+            attributes: ['firstName', 'lastName', 'email', 'password', 'birthdate', 'sex', 'height', 'weight', 'active'],
+            email: userObject.email,
+            password: userObject.password,
+
+        }).then(function(sequelizeResponse) {
+
+            console.log("DAO - Login Success: ");
+            console.log(sequelizeResponse.dataValues);
+            callback({
+                    message: "User loggedin"
+                });
+
+        }).catch(function(error) {
+
+            console.log("In catch with Error: " + error);
+            callback(error);
+
+        });
+
+        console.log('Inside usersSequelizeDao.login');
+    },
+    
     
     updateUser: function(userParam, userObject, callback) {
 
