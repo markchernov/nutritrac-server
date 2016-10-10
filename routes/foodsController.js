@@ -61,14 +61,14 @@ router.get('/:ndbno', function(req, res) {
     console.log('inside GET /foods/ndbno');
     console.log('req.params.ndbno:  ');
     console.log(req.params.ndbno);
-    var userNdbno = req.params.ndbno;
+    var foodNdbno = req.params.ndbno;
 
-    foodsSequelizeDao.findFoodByNdbno(userNdbno, function(sequelizeResponse, error) {
+    foodsSequelizeDao.findFoodByNdbno(foodNdbno, function(sequelizeResponse, error) {
 
         if (sequelizeResponse instanceof Error) {
 
 
-            console.log('Controller - findUserByNdbno Error: ');
+            console.log('Controller - findFoodByNdbno Error: ');
             console.log(sequelizeResponse);
             res.send(sequelizeResponse);
 
@@ -77,6 +77,33 @@ router.get('/:ndbno', function(req, res) {
         else {
 
             console.log('Controller - Foods ');
+            console.log(sequelizeResponse);
+            res.send(sequelizeResponse);
+        }
+    });
+
+});
+
+router.get('/search/:name', function(req, res) {
+
+    console.log('inside GET /foods/search/:name');
+    console.log('req.params.name:  ');
+    console.log(req.params.name);
+    var foodName = req.params.name;
+
+    foodsSequelizeDao.findFoodByChar(foodName, function(sequelizeResponse, error) {
+
+        if (sequelizeResponse instanceof Error) {
+
+
+            console.log('Controller - findUserByChar Error: ');
+            console.log(sequelizeResponse);
+            res.send(sequelizeResponse);
+            
+        }
+        else {
+
+            console.log('Controller - Char Foods ');
             console.log(sequelizeResponse);
             res.send(sequelizeResponse);
         }

@@ -1,3 +1,5 @@
+"use strict";
+
 const foodModel = require('../models/Food.js');
 
 
@@ -74,6 +76,63 @@ const foodsSequelizeDao = {
 
 
         console.log('Inside usersSequelizeDao.findFoodByNdbno');
+
+
+
+    },
+    
+    findFoodByChar: function(foodChar, callback) {
+
+
+        console.log("Inside DAO foodChar: ");
+        console.log(foodChar);
+        let char = foodChar;
+
+        foodModel.findAll({
+            attributes: ['ndbno', 'name'],
+            //plain: true,
+            where: {
+                name:  {$like : `%${char}%` }
+            }
+
+        }).then(function(sequelizeArray) {
+
+            console.log("DAO - Char Food: then");
+            
+            
+            try {
+                
+                console.log("sequelizeArray");
+                console.log(sequelizeArray[0].dataValues);
+                console.log(sequelizeArray[1].dataValues);
+                callback(sequelizeArray);
+                
+            }
+                
+         
+            catch(Error) {
+                
+                console.log(Error);
+                
+                callback([{
+                    ndbno: 0, 
+                    name: "Food does not exist"
+                }]);
+                
+                
+          }
+            
+            
+        }).catch(function(error) {
+
+            console.log("In catch with Error: ");
+            console.log(error);
+            callback(error);
+
+        });
+
+
+        console.log('Inside usersSequelizeDao.findFoodByChar');
 
 
 
