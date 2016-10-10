@@ -132,7 +132,7 @@ const usersSequelizeDao = {
             console.log("DAO - Login Success: ");
             console.log(sequelizeResponse.dataValues);
             callback({
-                    message: "User loggedin"
+                    message: "User logged in"
                 });
 
         }).catch(function(error) {
