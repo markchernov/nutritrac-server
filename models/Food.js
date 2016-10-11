@@ -9,7 +9,7 @@ const foodModel = sequelizeConnection.define('food', {
       field: 'ndbno',
       primaryKey: true,
       get      : function()  {
-          return this.getDataValue('name');
+          return this.getDataValue('ndbno');
         },
     },
     name: {

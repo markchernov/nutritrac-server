@@ -71,6 +71,7 @@ app.get('/ping', function(req, res) {
 
 app.use('/users', require('./routes/usersController.js'));
 app.use('/foods', require('./routes/foodsController.js'));
+app.use('/measures', require('./routes/measuresController.js'));
 
 
 

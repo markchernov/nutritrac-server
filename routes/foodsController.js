@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 /************************************************
-         Users in user table in c9 MySQL database
+         Foods in user table in c9 MySQL database
 **************************************************/
 
 // // middleware that is specific to this router
@@ -104,7 +104,7 @@ router.get('/search/:name', function(req, res) {
         else {
 
             console.log('Controller - Char Foods ');
-            console.log(sequelizeResponse);
+            //console.log(sequelizeResponse);
             res.send(sequelizeResponse);
         }
     });

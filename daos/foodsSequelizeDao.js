@@ -87,13 +87,61 @@ const foodsSequelizeDao = {
         console.log("Inside DAO foodChar: ");
         console.log(foodChar);
         let char = foodChar;
+        
+        let tokens = char.split(" ");
+        console.log("tokens: ");
+        console.log(tokens);
+        let tokensAfter = [];
+        
+        tokens.forEach(function(currentValue) {
+            
+            currentValue = '%' + currentValue + '%';
+            tokensAfter.push(currentValue);
+        
+        }); 
+        
+        console.log("tokensAfter: ");
+        console.log(tokensAfter);   
+        
 
         foodModel.findAll({
-            attributes: ['ndbno', 'name'],
-            //plain: true,
-            where: {
-                name:  {$like : `%${char}%` }
+                    attributes: ['ndbno', 'name'],
+                    //plain: true,
+                    limit: 50 ,
+        
+                    where: {
+        
+                        $and: [{
+                            name: {
+                                $like: tokensAfter[0]
+                            }
+                        }, {
+                            name: {
+                                $like: tokensAfter[1] || "%%"
+                            }    
+                        },
+                            
+                            {
+                            name: {
+                                $like: tokensAfter[2] || "%%"
+                            }
+                         
+                        }]
+                
+                
             }
+            
+            
+            
+            
+            
+            // where: {
+                
+                
+       
+            //     name:  {$like : `%${char}%` }
+               
+            // }
 
         }).then(function(sequelizeArray) {
 
@@ -103,8 +151,8 @@ const foodsSequelizeDao = {
             try {
                 
                 console.log("sequelizeArray");
-                console.log(sequelizeArray[0].dataValues);
-                console.log(sequelizeArray[1].dataValues);
+                //console.log(sequelizeArray[0].dataValues);
+                //console.log(sequelizeArray[1].dataValues);
                 callback(sequelizeArray);
                 
             }
