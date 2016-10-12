@@ -93,6 +93,12 @@ router.get('/search/:name', function(req, res) {
 
     foodsSequelizeDao.findFoodByChar(foodName, function(sequelizeResponse, error) {
 
+        
+        if(error)   {     res.send(error);              }
+        
+        
+        
+        
         if (sequelizeResponse instanceof Error) {
 
 

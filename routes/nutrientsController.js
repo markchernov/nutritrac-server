@@ -1,14 +1,14 @@
-const foodsSequelizeDao = require('../daos/measuresSequelizeDao.js');
+const nutrientsSequelizeDao = require('../daos/nutrientsSequelizeDao.js');
 const express = require('express');
 const router = express.Router();
 
 /************************************************
-         Measures in measure table in c9 MySQL database
+         Nutrients in nutrient table in c9 MySQL database
 **************************************************/
 
 // // middleware that is specific to this router
 router.use(function timeLog(req, res, next) {
-    console.log('In Measures Route,  Time: ', new Date());
+    console.log('In Nutrients Route,  Time: ', new Date());
     next();
 });
 
@@ -28,19 +28,23 @@ router.use(function(req, res, next) {
 **************************************************/
 
 
-router.get('/:ndbno', function(req, res) {
+router.get('/:ndbno/', function(req, res) {
 
     console.log('inside GET /measures/ndbno');
     console.log('req.params.ndbno:  ');
     console.log(req.params.ndbno);
+    
+    
     var foodNdbno = req.params.ndbno;
+   
+    
 
-    foodsSequelizeDao.findMeasureByFoodNdbno(foodNdbno, function(sequelizeResponse, error) {
+    nutrientsSequelizeDao.findNutrientByFoodNdbno(foodNdbno,  function(sequelizeResponse, error) {
 
         if (sequelizeResponse instanceof Error) {
 
 
-            console.log('Controller - findMeasureByFoodNdbno Error: ');
+            console.log('Controller - findNutrientByNdbno Error: ');
             console.log(sequelizeResponse);
             res.send(sequelizeResponse);
 
@@ -48,7 +52,7 @@ router.get('/:ndbno', function(req, res) {
         }
         else {
 
-            console.log('Controller - Measures ');
+            console.log('Controller - Nutrients ');
             console.log(sequelizeResponse);
             res.send(sequelizeResponse);
         }

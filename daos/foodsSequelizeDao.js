@@ -151,16 +151,16 @@ const foodsSequelizeDao = {
             try {
                 
                 console.log("sequelizeArray");
-                //console.log(sequelizeArray[0].dataValues);
+                console.log(sequelizeArray[0].dataValues);
                 //console.log(sequelizeArray[1].dataValues);
                 callback(sequelizeArray);
                 
             }
                 
          
-            catch(Error) {
+            catch(error) {
                 
-                console.log(Error);
+                console.log(error);
                 
                 callback([{
                     ndbno: 0, 
