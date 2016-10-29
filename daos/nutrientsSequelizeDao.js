@@ -19,7 +19,9 @@ const nutrientsSequelizeDao = {
                     
                             ndbno: foodNdbno
                       
-            }
+            },
+            
+            order: [['nutrient_id', 'ASC']]
 
         }).then(function(sequelizeObject) {
 

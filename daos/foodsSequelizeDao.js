@@ -44,7 +44,9 @@ const foodsSequelizeDao = {
             where: {
                 ndbno: foodNdbno
 
-            }
+            },
+            
+        
 
         }).then(function(sequelizeObject) {
 
@@ -129,7 +131,9 @@ const foodsSequelizeDao = {
                         }]
                 
                 
-            }
+            },
+            
+                 order: [['ndbno', 'ASC']]
             
             
             

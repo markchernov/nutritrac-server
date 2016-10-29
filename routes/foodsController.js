@@ -104,7 +104,8 @@ router.get('/search/:name', function(req, res) {
 
             console.log('Controller - findUserByChar Error: ');
             console.log(sequelizeResponse);
-            res.send(sequelizeResponse);
+            //res.send(sequelizeResponse);
+            res.send(new Error("Test err"));
             
         }
         else {

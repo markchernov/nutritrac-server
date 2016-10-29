@@ -51,6 +51,51 @@ const measuresSequelizeDao = {
     },
 
 
+    findMeasuresLabelsByFoodNdbno: function(foodNdbno, callback) {
+
+
+        measureModel.findAll({
+            attributes: ['label'],
+            where: {
+                ndbno_id: foodNdbno
+
+            },
+            group: ['label']
+
+        }).then(function(sequelizeObject) {
+
+            console.log("DAO - Measure: ");
+
+            if (sequelizeObject != null) {
+
+                console.log(sequelizeObject.dataValues);
+                callback(sequelizeObject);
+
+            }
+            else {
+
+                callback({
+                    message: "Measure does not exist"
+                });
+            }
+
+
+        }).catch(function(error) {
+
+            console.log("In catch with Error: ");
+            console.log(error);
+            callback(error);
+
+        });
+
+
+        console.log('Inside usersSequelizeDao.findMeasuresLabelsByFoodNdbno');
+
+
+
+    },
+
+
 
 };
 

@@ -1,4 +1,4 @@
-const foodsSequelizeDao = require('../daos/measuresSequelizeDao.js');
+const measuresSequelizeDao = require('../daos/measuresSequelizeDao.js');
 const express = require('express');
 const router = express.Router();
 
@@ -35,7 +35,7 @@ router.get('/:ndbno', function(req, res) {
     console.log(req.params.ndbno);
     var foodNdbno = req.params.ndbno;
 
-    foodsSequelizeDao.findMeasureByFoodNdbno(foodNdbno, function(sequelizeResponse, error) {
+    measuresSequelizeDao.findMeasureByFoodNdbno(foodNdbno, function(sequelizeResponse, error) {
 
         if (sequelizeResponse instanceof Error) {
 
@@ -57,7 +57,33 @@ router.get('/:ndbno', function(req, res) {
 });
 
 
+router.get('/labels/:ndbno', function(req, res) {
 
+    console.log('inside GET /measures/labels/ndbno');
+    console.log('req.params.ndbno:  ');
+    console.log(req.params.ndbno);
+    var foodNdbno = req.params.ndbno;
+
+    measuresSequelizeDao.findMeasuresLabelsByFoodNdbno(foodNdbno, function(sequelizeResponse, error) {
+
+        if (sequelizeResponse instanceof Error) {
+
+
+            console.log('Controller - findMeasureByFoodNdbno Error: ');
+            console.log(sequelizeResponse);
+            res.send(sequelizeResponse);
+
+
+        }
+        else {
+
+            console.log('Controller - Measures ');
+            console.log(sequelizeResponse);
+            res.send(sequelizeResponse);
+        }
+    });
+
+});
 
 /************************************************
          POSTS

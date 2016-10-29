@@ -55,6 +55,4 @@ const nutrientModel = sequelizeConnection.define('nutrient', {
 
 );
 
-
-
 module.exports = nutrientModel;
