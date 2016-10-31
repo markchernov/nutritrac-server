@@ -121,19 +121,29 @@ const usersSequelizeDao = {
     
      login: function(userObject, callback) {
 
+        console.log('Inside usersSequelizeDao.login');
+        console.log(userObject.email);
+        console.log(userObject.password);
 
         userModel.findOne({
             attributes: ['firstName', 'lastName', 'email', 'password', 'birthdate', 'sex', 'height', 'weight', 'active'],
-            email: userObject.email,
-            password: userObject.password,
+            
+            where: {
+                email: userObject.email,
+                password: userObject.password,
+
+            },
+            
 
         }).then(function(sequelizeResponse) {
 
             console.log("DAO - Login Success: ");
             console.log(sequelizeResponse.dataValues);
-            callback({
+        /*    callback({
                     message: "User logged in"
-                });
+                });*/
+                
+            callback(sequelizeResponse.dataValues);    
 
         }).catch(function(error) {
 
@@ -142,7 +152,7 @@ const usersSequelizeDao = {
 
         });
 
-        console.log('Inside usersSequelizeDao.login');
+       
     },
     
     
