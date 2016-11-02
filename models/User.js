@@ -8,12 +8,12 @@ const userModel = sequelizeConnection.define('user', {
       type: Sequelize.STRING,
       field: 'email',
       primaryKey: true,
-      get      : function()  {
-          var fname = this.getDataValue('firstName');
-          var lname = this.getDataValue('lastName');
-          // 'this' allows you to access attributes of the instance
-          return this.getDataValue('email') + ' of (' + fname + ' ' + lname + ')';
-        },
+      // get      : function()  {
+      //     var fname = this.getDataValue('firstName');
+      //     var lname = this.getDataValue('lastName');
+      //     // 'this' allows you to access attributes of the instance
+      //     return this.getDataValue('email') + ' of (' + fname + ' ' + lname + ')';
+      //   },
     },
     firstName: {
       type: Sequelize.STRING,

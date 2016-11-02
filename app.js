@@ -58,7 +58,7 @@ app.get('/', function(req, res) {
 });
 
 
-app.get('/ping', function(req, res) {
+app.get('/ping/ping', function(req, res) {
   
   console.log("Pinged");
     
@@ -66,6 +66,17 @@ app.get('/ping', function(req, res) {
     Ping: 'Pong'
   });
 
+});
+
+// home page route (http://localhost:8080)
+app.get('/home', function(req, res) {
+    res.send('im the home page!');
+});
+
+
+// about page route (http://localhost:8080/about)
+app.get('/about', function(req, res) {
+    res.send('im the about page!');
 });
 
 
