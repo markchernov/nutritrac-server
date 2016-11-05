@@ -90,17 +90,24 @@ const usersSequelizeDao = {
 
     createUser: function(userObject, callback) {
 
+         console.log("DAO createUser()    userObject  ");
+         console.log(userObject);
+        
 
         userModel.create({
-            attributes: ['firstName', 'lastName', 'email', 'password', 'birthdate', 'sex', 'height', 'weight', 'active'],
+            attributes: ['email', 'firstName', 'lastName', 'password', 'birthdate', 'sex', 'height', 'weight', 'active'],
+            
             email: userObject.email,
             firstName: userObject.firstName,
             lastName: userObject.lastName,
             password: userObject.password,
-            birthdate: userObject.birthDate,
+            birthdate: userObject.birthdate,
+            sex: userObject.sex,
             height: userObject.height,
             weight: userObject.weight,
-            active: userObject.active,
+            active: userObject.active
+            
+          
 
 
         }).then(function(sequelizeResponse) {
@@ -165,14 +172,20 @@ const usersSequelizeDao = {
 
         userModel.update({
             attributes: ['firstName', 'lastName',  'password', 'birthdate', 'sex', 'height', 'weight', 'active'],
+            
             firstName: userObject.firstName,
             lastName: userObject.lastName,
             password: userObject.password,
             birthdate: userObject.birthdate,
+ 
             sex: userObject.sex,
             height: userObject.height,
             weight: userObject.weight,
-            active: userObject.active, }, {
+            active: userObject.active
+            
+            
+            
+        }, {
             
             where: {
                 email: userParam
