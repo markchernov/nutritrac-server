@@ -84,6 +84,7 @@ app.use('/users', require('./routes/usersController.js'));
 app.use('/foods', require('./routes/foodsController.js'));
 app.use('/measures', require('./routes/measuresController.js'));
 app.use('/nutrients', require('./routes/nutrientsController.js'));
+app.use('/meals/meals', require('./routes/mealsController.js'));
 
 
 
